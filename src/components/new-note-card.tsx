@@ -3,7 +3,11 @@ import { X } from 'lucide-react'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { toast } from 'sonner'
 
-export function NewNoteCard() {
+interface NewNoteCardProps{
+  onNoteCreated: (content: string) => void
+} 
+
+export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
   const [shouldShowOnboarding, setShouldShowOnboarding] = useState(true) //Quando se cria uma variável booleana, o nome dela deve indicar uma pergunta que pode ser respondida com sim ou não
   // O React não atualiza o estado da variável apenas por setar outro valor dela.
   //O useState retorna um array, no qual a 1ª posição diz respeito à variável
@@ -25,7 +29,7 @@ export function NewNoteCard() {
   function handleSaveNote(event: FormEvent) {
     event.preventDefault()
 
-    console.log(content)
+    onNoteCreated(content)
 
     toast.success('Nota criada com sucesso!')
   } //Será disparada quando o usuário fizer o submit do form (textarea)
