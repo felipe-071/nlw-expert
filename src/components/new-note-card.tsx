@@ -31,6 +31,9 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
 
     onNoteCreated(content)
 
+    setContent('')
+    setShouldShowOnboarding(true) //Mostra novamente o texto que pergunta ao usuário se ele quer digitar ou gravar um áudio para uma nova nota
+
     toast.success('Nota criada com sucesso!')
   } //Será disparada quando o usuário fizer o submit do form (textarea)
   return (
@@ -68,7 +71,8 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
                 <textarea
                   autoFocus
                   className="text-sm leading-6 text-slate-400 flex-1 bg-transparent resize-none outline-none"
-                  onChange={handleContentChanged} />
+                  onChange={handleContentChanged}
+                  value={content} />
               )}
             </div>
 
