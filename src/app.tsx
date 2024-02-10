@@ -10,7 +10,17 @@ interface Note {
 }
 
 export function App() { //O Diego gosta de fazer exports nomeados, como nesta linha
-  const [notes, setNotes] = useState<Note[]>([]) //Essa linha especifica ao react que este array terá o formato especificado na interface. Informar o formato, aqui, é obrigatório, caso contrátio... never[]
+  const [notes, setNotes] = useState<Note[]>(() =>{
+    const notesOnStorage = localStorage.getItem('notes')
+
+    if (notesOnStorage) {
+      return JSON.parse(notesOnStorage) //O parse é o contrário do stringify
+    }
+
+    return []
+  }) //Essa linha especifica ao react que este array terá o formato especificado na interface. Informar o formato, aqui, é obrigatório, caso contrátio... never[]
+//Sempre que a página for reiniciada, sempre seria "renderizado" um array vazio por conta da linha de cima
+
 
   function onNoteCreated(content: string){
     const newNote = {
@@ -19,7 +29,13 @@ export function App() { //O Diego gosta de fazer exports nomeados, como nesta li
       content,
     }
 
-    setNotes([ newNote, ...notes])
+    const notesArray = [ newNote, ...notes]
+
+    setNotes(notesArray)
+
+    localStorage.setItem('notes', JSON.stringify(notesArray)) //O localStorage não aceita arrays, então é necessário converter para JSON
+  
+  //JSON = JavaScript Object Notation. É a representação em string de qualquer valor primitivo JS
   }
 
   return (
