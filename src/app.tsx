@@ -10,6 +10,7 @@ interface Note {
 }
 
 export function App() { //O Diego gosta de fazer exports nomeados, como nesta linha
+  const [search, setSearch] = useState('')
   const [notes, setNotes] = useState<Note[]>(() =>{
     const notesOnStorage = localStorage.getItem('notes')
 
@@ -38,6 +39,15 @@ export function App() { //O Diego gosta de fazer exports nomeados, como nesta li
   //JSON = JavaScript Object Notation. É a representação em string de qualquer valor primitivo JS
   }
 
+  function handleSearch(event: ChangeEvent<HTMLInputElement>) {
+    const query = event.target.value
+    setSearch(query)
+  }
+
+  const filteredNotes = search != ''
+  ? notes.filter(note => note.content.toLocaleLowerCase().includes(search.toLocaleLowerCase())) //Eu vou procurar as notas cujo conteúdo inclui a palavra buscada
+  : notes
+
   return (
     <div className="mx-auto max-w-6xl my-12 space-y-6"> 
       <img src={logo} alt="NLW Expert"/>
@@ -46,6 +56,7 @@ export function App() { //O Diego gosta de fazer exports nomeados, como nesta li
           type="text" 
           placeholder="Busque em suas notas..."
           className="w-full bg-transparent text-3xl font-semibold tracking-tight outline-none placeholder:text-slate-500"
+          onChange={handleSearch}
         />
       </form>
 
@@ -57,7 +68,7 @@ export function App() { //O Diego gosta de fazer exports nomeados, como nesta li
       <NewNoteCard onNoteCreated={onNoteCreated} />
 
 
-    {notes.map(note =>{
+    {filteredNotes.map(note =>{
       return <NoteCard key={note.id} note={note} />
     })}
 
