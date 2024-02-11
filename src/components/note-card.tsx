@@ -7,9 +7,11 @@ import { X } from 'lucide-react'
 
 interface NoteCardProps{ //Aqui, cria-se uma interface com dados alteráveis e dinâmicos
     note: {
+        id:string
         date: Date
         content: string
     }
+    onNoteDeleted: (id: string) => void
 }
 
 // export function NoteCard(props: NoteCardProps) { //O parâmetro da function faz a tipagem dos valores, ou seja, o notecard segue a estrutura definida na interface 
@@ -27,7 +29,7 @@ interface NoteCardProps{ //Aqui, cria-se uma interface com dados alteráveis e d
 //     )
 // }
 
-export function NoteCard({note}: NoteCardProps) { //Para tirar o props, basta desestruturar como nesta linha
+export function NoteCard({note, onNoteDeleted}: NoteCardProps) { //Para tirar o props, basta desestruturar como nesta linha
   return (
     <Dialog.Root>
       <Dialog.Trigger className="rounded-md text-left flex flex-col bg-slate-800 p-5 gap-3 overflow-hidden relative hover:ring-2 hover:ring-slate-600 outline-none focus-visible:ring-2 focus-visible:ring-lime-400">
@@ -59,6 +61,7 @@ export function NoteCard({note}: NoteCardProps) { //Para tirar o props, basta de
 
           <button 
           type="button" 
+          onClick={() => onNoteDeleted(note.id)} //O onClick precisa de uma função, mas quando passa-se um parâmetro, ela não está sendo referenciada nele, mas sim executada. No React, uma função com parâmetro deve ser antecedida de uma arrow function, e fazer isso faz com que o evento ocorra sem erros
           className="w-full bg-slate-800 py-4 text-center text-sm text-slate-300 outline-none font-medium group"
           >
             Deseja <span className="text-red-400 group-hover:underline">apagar esta nota</span>?

@@ -39,6 +39,16 @@ export function App() { //O Diego gosta de fazer exports nomeados, como nesta li
   //JSON = JavaScript Object Notation. É a representação em string de qualquer valor primitivo JS
   }
 
+  function onNoteDeleted(id: string) {
+    const notesArray = notes.filter(note => {
+      return note.id != id
+    })
+
+    setNotes(notesArray)
+
+    localStorage.setItem('notes', JSON.stringify(notesArray))
+  }
+
   function handleSearch(event: ChangeEvent<HTMLInputElement>) {
     const query = event.target.value
     setSearch(query)
@@ -69,7 +79,7 @@ export function App() { //O Diego gosta de fazer exports nomeados, como nesta li
 
 
     {filteredNotes.map(note =>{
-      return <NoteCard key={note.id} note={note} />
+      return <NoteCard key={note.id} note={note} onNoteDeleted={onNoteDeleted} />
     })}
 
       </div>
